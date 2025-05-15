@@ -12,7 +12,7 @@ steps:
 
   # Upload Dag files
 - name: 'gcr.io/cloud-builders/gsutil'
-  args: ['-m', 'cp', '-r', 'dags/*', '${_Composer_Environment_}']
+  args: ['-m', 'cp', '-r', 'dags/*', 'gs://us-east1-healthcare-compose-89c55025-bucket/dags']
 
 # Upload requirements.txt
 - name: 'gcr.io/cloud-builders/gsutil'
