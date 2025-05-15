@@ -42,7 +42,7 @@ def run():
 
     # Create a Beam pipeline
     with beam.Pipeline(options=options) as p:
-        # Read data from the encounters table
+        # Read data from the facilities table
         facilities_data = (
             p
             | 'ReadFacilities' >> beam.Create([None])
