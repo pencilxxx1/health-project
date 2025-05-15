@@ -20,7 +20,7 @@ default_args = {
 
 def get_sql_from_gcs(**context):
     gcs_hook = GCSHook(gcp_conn_id='google_cloud_default')
-    bucket_name = 'bucket-du-health-project'
+    bucket_name = 'bucket-ak-health-project'
     file_name = 'sql/create_star_schema.sql'
     file_content = gcs_hook.download_as_byte_array(bucket_name=bucket_name,object_name= file_name).decode('utf-8')
     return file_content
