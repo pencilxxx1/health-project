@@ -4,33 +4,32 @@ from airflow import models
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
-from airflow .providers.google.clod.operators.dataflow import DataflowCreatePipelineOperator
+from airflow.providers.google.cloud.operators.dataflow import DataflowCreatePipelineOperator
 from airflow.providers.google.cloud.hooks.gcs import GCSHook
 
 
 default_args = {
-    'owner': '10alytics',
-    'depends_on_past': False,
-    'start_date': datetime(2025, 1, 1),
-    'retries': 1,
-    'retry_delay': timedelta(minutes=1),
+'owner': '10alytics',
+'depends_on_past': False,
+'start_date': datetime(2025, 1, 1),
+'retries': 1,
+'retry_delay': timedelta(minutes=1),
 
 }
 
-# run the sql script to create the tables
+
 def get_sql_from_gcs(**context):
     gcs_hook = GCSHook(gcp_conn_id='google_cloud_default')
-    bucket_name = 'bucket-ak-health-project'
+    bucket_name = 'bucket-du-health-project'
     file_name = 'sql/create_star_schema.sql'
-    file_content = gcs_hook.download_as_byte_array(bucket_name=bucket_name, object_name=file_name).decode('utf-8')
+    file_content = gcs_hook.download_as_byte_array(bucket_name=bucket_name,object_name= file_name).decode('utf-8')
     return file_content
-
 
 
 with models.DAG(
     dag_id='health_etl_dag',
     default_args=default_args,
-    description='Daily Health Tech Dag That Fetches Data from a PostgresDB and Loads it into BigQuery',
+    description='Daily Health Tech Dag That Fetches Data from a Postgres DB and Loads it into BigQuery',
     schedule_interval=timedelta(days=1),
 ) as dag:
     start = EmptyOperator(task_id='start')
@@ -58,13 +57,3 @@ with models.DAG(
     end = EmptyOperator(task_id='end')
 
     start >> fetch_sql >> create_star_schema >> end
-    
-
-
-
-# import necessary libraries
-
-# initialize the DAG
-
-
-
